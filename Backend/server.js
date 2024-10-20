@@ -3,7 +3,13 @@ const dialogflow = require('@google-cloud/dialogflow');
 const uuid = require('uuid');
 const cors = require('cors');
 require('dotenv').config();
+const fs = require('fs');
 const app = express();
+
+// Decode the base64 string and write it to a temporary file
+const serviceAccountKeyBase64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+const serviceAccountKeyJson = Buffer.from(serviceAccountKeyBase64, 'base64').toString('utf-8');
+
 
 app.use(cors());
 app.use(express.json());
@@ -19,9 +25,11 @@ app.post('/api/dialogflow', async (req, res) => {
   sessionId = clientSessionId || uuid.v4();
 
   
-  const sessionClient = new dialogflow.SessionsClient({
-    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  });
+  fs.writeFileSync('/tmp/service-account-key.json', serviceAccountKeyJson);
+
+const sessionClient = new dialogflow.SessionsClient({
+  keyFilename: '/tmp/service-account-key.json',
+});
 
   const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
