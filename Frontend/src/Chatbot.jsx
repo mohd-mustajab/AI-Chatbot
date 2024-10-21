@@ -10,6 +10,7 @@ function Chatbot() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
+      setQuery('');
     e.preventDefault();
     setLoading(true);
     try {
@@ -24,7 +25,6 @@ function Chatbot() {
       
       setMessages((prevMessages) => [...prevMessages, { text: res.data.fulfillmentText, sender: 'bot' }]);
       setSessionId(res.data.sessionId); 
-      setQuery('');
     } catch (err) {
       console.error('Error sending query:', err);
       setMessages((prevMessages) => [...prevMessages, { text: 'Error communicating with Dialogflow', sender: 'bot' }]);
@@ -64,7 +64,7 @@ function Chatbot() {
       <form className="input-box" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Type Hello to start"
+          placeholder="Ask anything"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           required
