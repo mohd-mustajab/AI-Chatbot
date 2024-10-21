@@ -64,7 +64,7 @@ function Chatbot() {
       <form className="input-box" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Start with Hello"
+          placeholder="Type Hello to start"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           required
