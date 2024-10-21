@@ -54,7 +54,7 @@ function Chatbot() {
           <div className="no-messages"><h1>
             Ask anything......</h1>
             <p>Book a ticket from Delhi to Mumbai</p>
-            <p>Fair of train from Mumbai to Hyderabad</p>
+            <p>Fare of train from Mumbai to Hyderabad</p>
             <p>Next Train to Hyderabad</p>
             </div>
         )}
