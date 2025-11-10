@@ -17,7 +17,7 @@ function Chatbot() {
      
       setMessages((prevMessages) => [...prevMessages, { text: query, sender: 'user' }]);
 
-      const res = await axios.post('https://ai-chatbot-yi6e.onrender.com/api/dialogflow', {
+      const res = await axios.post('/api/dialogflow', {
         query,
         sessionId,
       });
