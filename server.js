@@ -1,23 +1,30 @@
-const express = require('express');
-const dialogflow = require('@google-cloud/dialogflow');
-const uuid = require('uuid');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+import express from 'express';
+import dialogflow from '@google-cloud/dialogflow';
+import uuid from 'uuid';
+import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Decode Base64 key and save temporarily (for Dialogflow auth)
+// Base64 Google credentials handling
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
   const keyPath = '/tmp/service-account-key.json';
-  const keyFileContent = Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('utf8');
+  const keyFileContent = Buffer.from(
+    process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64,
+    'base64'
+  ).toString('utf8');
   fs.writeFileSync(keyPath, keyFileContent);
   process.env.GOOGLE_APPLICATION_CREDENTIALS = keyPath;
 }
 
-// Dialogflow API
+// Dialogflow route
 app.post('/api/dialogflow', async (req, res) => {
   const { query, sessionId: clientSessionId } = req.body;
   const projectId = 'mohdmustajab-elpj';
@@ -48,9 +55,10 @@ app.post('/api/dialogflow', async (req, res) => {
   }
 });
 
-// Serve Frontend (React build output)
-const frontendPath = path.join(__dirname, 'Frontend', 'dist');
+// ✅ Serve Frontend correctly for Vercel
+const frontendPath = path.join(__dirname, 'dist'); // ✅ correct for Vercel
 app.use(express.static(frontendPath));
+
 app.get('*', (_, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
