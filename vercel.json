@@ -1,10 +1,25 @@
 {
   "builds": [
-    { "src": "api/*.js", "use": "@vercel/node" },
-    { "src": "Frontend/vite.config.js", "use": "@vercel/static-build" }
+    {
+      "src": "api/dialogflow.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "Frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/dialogflow.js" },
-    { "src": "/(.*)", "dest": "/Frontend/index.html" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/dialogflow.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/Frontend/dist/$1"
+    }
   ]
 }
