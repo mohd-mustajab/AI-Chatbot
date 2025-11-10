@@ -1,6 +1,6 @@
 import express from 'express';
 import dialogflow from '@google-cloud/dialogflow';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';  // ✅ fixed import
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Base64 Google credentials handling
+// ✅ Decode Google Cloud credentials from base64
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
   const keyPath = '/tmp/service-account-key.json';
   const keyFileContent = Buffer.from(
@@ -22,21 +22,26 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
   ).toString('utf8');
   fs.writeFileSync(keyPath, keyFileContent);
   process.env.GOOGLE_APPLICATION_CREDENTIALS = keyPath;
+} else {
+  console.error('❌ GOOGLE_APPLICATION_CREDENTIALS_BASE64 is not set.');
 }
 
-// Dialogflow route
+// ✅ Dialogflow route
 app.post('/api/dialogflow', async (req, res) => {
   const { query, sessionId: clientSessionId } = req.body;
-  const projectId = 'mohdmustajab-elpj';
+  const projectId = 'mohdmustajab-elpj'; // your Dialogflow project ID
 
-  const sessionId = clientSessionId || uuid.v4();
+  const sessionId = clientSessionId || uuidv4();
   const sessionClient = new dialogflow.SessionsClient();
   const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
   const request = {
     session: sessionPath,
     queryInput: {
-      text: { text: query, languageCode: 'en-US' },
+      text: {
+        text: query,
+        languageCode: 'en-US',
+      },
     },
   };
 
@@ -50,19 +55,21 @@ app.post('/api/dialogflow', async (req, res) => {
       sessionId,
     });
   } catch (error) {
-    console.error('Dialogflow error:', error);
+    console.error('❌ Dialogflow error:', error);
     res.status(500).send('Error communicating with Dialogflow');
   }
 });
 
-// ✅ Serve Frontend correctly for Vercel
-const frontendPath = path.join(__dirname, 'Frontend', 'dist'); // ✅ match actual folder
+// ✅ Serve Frontend (for Vercel)
+const frontendPath = path.join(__dirname, 'Frontend', 'dist'); // path inside deployment
 app.use(express.static(frontendPath));
 
 app.get('*', (_, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});
