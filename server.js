@@ -61,7 +61,7 @@ app.post('/api/dialogflow', async (req, res) => {
 });
 
 // ✅ Serve Frontend (for Vercel)
-const frontendPath = path.join(__dirname, 'Frontend', 'dist'); // path inside deployment
+const frontendPath = path.join(__dirname, 'dist'); // path inside deployment
 app.use(express.static(frontendPath));
 
 app.get('*', (_, res) => {

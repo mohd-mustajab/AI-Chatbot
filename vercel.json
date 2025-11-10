@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd Frontend && npm install && npm run build",
-  "outputDirectory": "Frontend/dist",
+  "buildCommand": "cd Frontend && npm install && npm run build && mv dist ../dist",
+  "outputDirectory": "dist",
   "builds": [
     {
       "src": "server.js",
