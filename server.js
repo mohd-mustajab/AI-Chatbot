@@ -62,6 +62,9 @@ app.post('/api/dialogflow', async (req, res) => {
 
 // ✅ Serve Frontend (for Vercel)
 const frontendPath = path.join(__dirname, 'dist');
+console.log("🧩 Runtime dir:", __dirname);
+console.log("🧩 Dist exists:", fs.existsSync(path.join(__dirname, "dist")));
+console.log("🧩 Index exists:", fs.existsSync(path.join(__dirname, "dist", "index.html")));
 app.use(express.static(frontendPath));
 
 app.get('*', (_, res) => {
