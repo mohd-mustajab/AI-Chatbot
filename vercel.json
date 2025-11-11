@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd Frontend && npm install && npm run build && cp -r dist ../dist",
+  "buildCommand": "cd Frontend && npm install && npm run build && xcopy dist ..\\dist /E /I /Y",
   "outputDirectory": "dist",
   "builds": [
     {
@@ -9,6 +9,6 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/server.js" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/(.*)", "dest": "/server.js" }
   ]
 }

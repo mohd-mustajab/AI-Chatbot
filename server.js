@@ -76,4 +76,7 @@ app.get('*', (_, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
+  console.log("✅ Server started successfully in Vercel runtime");
+console.log("📂 Files in runtime dir:", fs.readdirSync(__dirname));
+
 });
