@@ -61,15 +61,13 @@ app.post('/api/dialogflow', async (req, res) => {
 });
 
 // ✅ Serve Frontend (for Vercel)
-const frontendPath = path.join(__dirname, "dist");
-console.log("🧩 Vercel runtime path:", __dirname);
-console.log("🧩 dist exists:", fs.existsSync(frontendPath));
-console.log("🧩 index.html exists:", fs.existsSync(path.join(frontendPath, "index.html")));
+const frontendPath = path.join(__dirname, 'dist');
 app.use(express.static(frontendPath));
 
 app.get('*', (_, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
+
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;

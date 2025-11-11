@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd Frontend && npm install && npm run build && xcopy dist ..\\dist /E /I /Y",
+  "buildCommand": "cd Frontend && npm install && npm run build && cp -r dist ../dist",
   "outputDirectory": "dist",
   "builds": [
     {
